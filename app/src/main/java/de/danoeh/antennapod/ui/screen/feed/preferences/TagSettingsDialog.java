@@ -49,8 +49,9 @@ public class TagSettingsDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        @SuppressWarnings("unchecked")
         ArrayList<FeedPreferences> feedPreferencesList =
-                (ArrayList<FeedPreferences>) getArguments().getSerializable(ARG_FEED_PREFERENCES);
+                (ArrayList<FeedPreferences>) getArguments().getSerializable(ARG_FEED_PREFERENCES, ArrayList.class);
         Set<String> commonTags = new HashSet<>(feedPreferencesList.get(0).getTags());
 
         for (FeedPreferences preference : feedPreferencesList) {

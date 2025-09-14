@@ -54,22 +54,14 @@ public class ClockSleepTimer implements SleepTimer {
 
     protected void vibrate() {
         final Vibrator vibrator;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            VibratorManager vibratorManager = (VibratorManager)
-                    context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE);
-            vibrator = vibratorManager.getDefaultVibrator();
-        } else {
-            vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        }
+        VibratorManager vibratorManager = (VibratorManager)
+                context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE);
+        vibrator = vibratorManager.getDefaultVibrator();
         if (vibrator == null) {
             return;
         }
         final int duration = 500;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator.vibrate(VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE));
-        } else {
-            vibrator.vibrate(duration);
-        }
+        vibrator.vibrate(VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE));
     }
 
     protected void notifyAboutExpiry() {

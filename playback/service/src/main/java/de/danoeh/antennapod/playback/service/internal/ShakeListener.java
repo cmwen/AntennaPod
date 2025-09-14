@@ -48,21 +48,13 @@ public class ShakeListener implements SensorEventListener {
 
     protected void vibrate() {
         final Vibrator vibrator;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            VibratorManager vibratorManager = (VibratorManager)
-                    mContext.getSystemService(Context.VIBRATOR_MANAGER_SERVICE);
-            vibrator = vibratorManager.getDefaultVibrator();
-        } else {
-            vibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
-        }
+        VibratorManager vibratorManager = (VibratorManager)
+                mContext.getSystemService(Context.VIBRATOR_MANAGER_SERVICE);
+        vibrator = vibratorManager.getDefaultVibrator();
 
         final int duration = 100;
         if (vibrator != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                vibrator.vibrate(VibrationEffect.createOneShot(duration, 120));
-            } else {
-                vibrator.vibrate(duration);
-            }
+            vibrator.vibrate(VibrationEffect.createOneShot(duration, 120));
         }
     }
 

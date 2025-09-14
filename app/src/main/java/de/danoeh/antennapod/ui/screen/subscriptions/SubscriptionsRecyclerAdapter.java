@@ -112,13 +112,11 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         });
 
         holder.itemView.setOnTouchListener((v, e) -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (e.isFromSource(InputDevice.SOURCE_MOUSE)
-                        &&  e.getButtonState() == MotionEvent.BUTTON_SECONDARY) {
-                    if (!inActionMode()) {
-                        longPressedPosition = holder.getBindingAdapterPosition();
-                        selectedItem = feed;
-                    }
+            if (e.isFromSource(InputDevice.SOURCE_MOUSE)
+                    &&  e.getButtonState() == MotionEvent.BUTTON_SECONDARY) {
+                if (!inActionMode()) {
+                    longPressedPosition = holder.getBindingAdapterPosition();
+                    selectedItem = feed;
                 }
             }
             return false;

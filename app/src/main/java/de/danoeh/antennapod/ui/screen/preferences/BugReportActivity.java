@@ -66,10 +66,6 @@ public class BugReportActivity extends ToolbarActivity {
             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clip = ClipData.newPlainText(getString(R.string.bug_report_title), crashDetailsTextView.getText());
             clipboard.setPrimaryClip(clip);
-            if (Build.VERSION.SDK_INT < 32) {
-                Snackbar.make(findViewById(android.R.id.content), R.string.copied_to_clipboard,
-                        Snackbar.LENGTH_SHORT).show();
-            }
         });
     }
 

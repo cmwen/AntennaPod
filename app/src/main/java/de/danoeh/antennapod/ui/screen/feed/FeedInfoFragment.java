@@ -171,9 +171,6 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         if (clipboard != null) {
             ClipData clip = ClipData.newPlainText(text, text);
             clipboard.setPrimaryClip(clip);
-            if (Build.VERSION.SDK_INT <= 32) {
-                EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
-            }
         }
     }
 

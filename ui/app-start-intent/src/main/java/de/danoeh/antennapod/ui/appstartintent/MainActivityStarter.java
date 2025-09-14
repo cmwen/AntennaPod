@@ -39,7 +39,7 @@ public class MainActivityStarter {
 
     public PendingIntent getPendingIntent() {
         return PendingIntent.getActivity(context, R.id.pending_intent_player_activity, getIntent(),
-                PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
     public void start() {

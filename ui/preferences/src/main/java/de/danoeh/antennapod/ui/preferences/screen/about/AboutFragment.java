@@ -39,9 +39,7 @@ public class AboutFragment extends AnimatedPreferenceFragment {
             ClipData clip = ClipData.newPlainText(getString(R.string.bug_report_title),
                     findPreference("about_version").getSummary());
             clipboard.setPrimaryClip(clip);
-            if (Build.VERSION.SDK_INT <= 32) {
-                Snackbar.make(getView(), R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
-            }
+            Snackbar.make(getView(), R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
             return true;
         });
         findPreference("about_contributors").setOnPreferenceClickListener((preference) -> {

@@ -14,9 +14,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
+import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.MultiTransformation;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -38,7 +40,7 @@ import java.util.List;
 /**
  * BaseAdapter for the navigation drawer
  */
-public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
+public final class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     public static final int VIEW_TYPE_NAV = 0;
@@ -168,12 +170,9 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             holder.itemView.setOnClickListener(v -> itemAccess.onItemClick(position));
             holder.itemView.setOnLongClickListener(v -> itemAccess.onItemLongClick(position));
             holder.itemView.setOnTouchListener((v, e) -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (e.isFromSource(InputDevice.SOURCE_MOUSE)
-                            && e.getButtonState() == MotionEvent.BUTTON_SECONDARY) {
-                        itemAccess.onItemLongClick(position);
-                        return false;
-                    }
+                if (e.isFromSource(InputDevice.SOURCE_MOUSE)
+                        && e.getButtonState() == MotionEvent.BUTTON_SECONDARY) {
+                    itemAccess.onItemLongClick(position);
                 }
                 return false;
             });
@@ -250,13 +249,13 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         }
 
         float radius = 4 * context.getResources().getDisplayMetrics().density;
-        Glide.with(context)
+        Glide.with((FragmentActivity) context)
                 .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                     .placeholder(ImagePlaceholder.getDrawable(context, radius))
                     .error(ImagePlaceholder.getDrawable(context, radius))
-                    .transform(new FitCenter(),
-                            new RoundedCorners((int) radius))
+                    .transform(new MultiTransformation<>(new FitCenter(),
+                            new RoundedCorners((int) radius)))
                     .dontAnimate())
                 .into(holder.image);
 
@@ -271,7 +270,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         if (tag.isOpen()) {
             holder.count.setVisibility(View.GONE);
         }
-        Glide.with(context).clear(holder.image);
+        Glide.with((FragmentActivity) context).clear(holder.image);
         holder.image.setImageResource(R.drawable.ic_tag);
         holder.failure.setVisibility(View.GONE);
     }

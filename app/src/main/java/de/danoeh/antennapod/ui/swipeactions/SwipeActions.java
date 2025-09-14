@@ -7,9 +7,9 @@ import android.graphics.Canvas;
 import androidx.annotation.NonNull;
 import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,7 +29,7 @@ import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
-public class SwipeActions extends ItemTouchHelper.SimpleCallback implements LifecycleObserver {
+public class SwipeActions extends ItemTouchHelper.SimpleCallback implements DefaultLifecycleObserver {
     public static final String PREF_NAME = "SwipeActionsPrefs";
     public static final String KEY_PREFIX_SWIPEACTIONS = "PrefSwipeActions";
     public static final String KEY_PREFIX_NO_ACTION = "PrefNoSwipeAction";
@@ -47,8 +47,9 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
     Actions actions;
     boolean swipeOutEnabled = true;
     int swipedOutTo = 0;
-    private final ItemTouchHelper itemTouchHelper = new ItemTouchHelper(this);
+    private ItemTouchHelper itemTouchHelper;
 
+    @SuppressWarnings("this-escape")
     public SwipeActions(int dragDirs, Fragment fragment, String tag) {
         super(dragDirs, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT);
         this.fragment = fragment;
@@ -70,8 +71,12 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
         return null;
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    public void reloadPreference() {
+    @Override
+    public void onStart(@NonNull LifecycleOwner owner) {
+        reloadPreference();
+    }
+
+    public final void reloadPreference() {
         actions = getPrefs(fragment.requireContext(), tag);
     }
 
@@ -80,12 +85,17 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
     }
 
     public SwipeActions attachTo(RecyclerView recyclerView) {
+        if (itemTouchHelper == null) {
+            itemTouchHelper = new ItemTouchHelper(this);
+        }
         itemTouchHelper.attachToRecyclerView(recyclerView);
         return this;
     }
 
     public void detach() {
-        itemTouchHelper.attachToRecyclerView(null);
+        if (itemTouchHelper != null) {
+            itemTouchHelper.attachToRecyclerView(null);
+        }
     }
 
     private static Actions getPrefs(Context context, String tag, String defaultActions) {
@@ -245,7 +255,9 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
     }
 
     public void startDrag(EpisodeItemViewHolder holder) {
-        itemTouchHelper.startDrag(holder);
+        if (itemTouchHelper != null) {
+            itemTouchHelper.startDrag(holder);
+        }
     }
 
     public static class Actions {

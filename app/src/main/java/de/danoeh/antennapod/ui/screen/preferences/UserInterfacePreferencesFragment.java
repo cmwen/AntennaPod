@@ -46,9 +46,6 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
         findPreference(UserPreferences.PREF_THEME).setOnPreferenceChangeListener(restartApp);
         findPreference(UserPreferences.PREF_THEME_BLACK).setOnPreferenceChangeListener(restartApp);
         findPreference(UserPreferences.PREF_TINTED_COLORS).setOnPreferenceChangeListener(restartApp);
-        if (Build.VERSION.SDK_INT < 31) {
-            findPreference(UserPreferences.PREF_TINTED_COLORS).setVisible(false);
-        }
 
         findPreference(UserPreferences.PREF_SHOW_TIME_LEFT)
                 .setOnPreferenceChangeListener(
@@ -84,9 +81,7 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
                     return true;
                 });
 
-        if (Build.VERSION.SDK_INT >= 26) {
-            findPreference(UserPreferences.PREF_EXPANDED_NOTIFICATION).setVisible(false);
-        }
+        findPreference(UserPreferences.PREF_EXPANDED_NOTIFICATION).setVisible(false);
 
         findPreference(UserPreferences.PREF_BOTTOM_NAVIGATION).setOnPreferenceChangeListener((preference, newValue) -> {
             if (newValue instanceof Boolean) {

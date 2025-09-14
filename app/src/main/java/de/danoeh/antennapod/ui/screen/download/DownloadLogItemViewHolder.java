@@ -32,9 +32,7 @@ public class DownloadLogItemViewHolder extends RecyclerView.ViewHolder {
         secondaryActionProgress = itemView.findViewById(R.id.secondaryActionProgress);
         secondaryActionIcon = itemView.findViewById(R.id.secondaryActionIcon);
         title = itemView.findViewById(R.id.txtvTitle);
-        if (Build.VERSION.SDK_INT >= 23) {
-            title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
-        }
+        title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
         itemView.setTag(this);
     }
 }

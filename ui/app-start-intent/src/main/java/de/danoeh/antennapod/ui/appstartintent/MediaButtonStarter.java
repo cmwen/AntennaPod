@@ -19,6 +19,6 @@ public abstract class MediaButtonStarter {
 
     public static PendingIntent createPendingIntent(Context context, int eventCode) {
         return PendingIntent.getBroadcast(context, eventCode, createIntent(context, eventCode),
-                (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+                PendingIntent.FLAG_IMMUTABLE);
     }
 }

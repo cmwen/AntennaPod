@@ -96,9 +96,7 @@ public class ProxyDialog {
         List<String> types = new ArrayList<>();
         types.add(Proxy.Type.DIRECT.name());
         types.add(Proxy.Type.HTTP.name());
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            types.add(Proxy.Type.SOCKS.name());
-        }
+        types.add(Proxy.Type.SOCKS.name());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
                 android.R.layout.simple_list_item_1, types);

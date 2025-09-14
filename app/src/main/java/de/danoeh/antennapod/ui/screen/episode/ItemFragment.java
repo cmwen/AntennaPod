@@ -141,9 +141,7 @@ public class ItemFragment extends Fragment {
         txtvPodcast = layout.findViewById(R.id.txtvPodcast);
         txtvPodcast.setOnClickListener(v -> openPodcast());
         txtvTitle = layout.findViewById(R.id.txtvTitle);
-        if (Build.VERSION.SDK_INT >= 23) {
-            txtvTitle.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
-        }
+        txtvTitle.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
         txtvDuration = layout.findViewById(R.id.txtvDuration);
         txtvPublished = layout.findViewById(R.id.txtvPublished);
         txtvTitle.setEllipsize(TextUtils.TruncateAt.END);
@@ -207,9 +205,6 @@ public class ItemFragment extends Fragment {
         if (clipboard != null) {
             ClipData clip = ClipData.newPlainText(text, text);
             clipboard.setPrimaryClip(clip);
-            if (Build.VERSION.SDK_INT <= 32) {
-                EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
-            }
         }
     }
 
