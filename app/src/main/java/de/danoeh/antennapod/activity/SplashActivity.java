@@ -3,6 +3,7 @@ package de.danoeh.antennapod.activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  */
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends Activity {
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +38,11 @@ public class SplashActivity extends Activity {
                     () -> {
                         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                         startActivity(intent);
-                        overridePendingTransition(0, 0);
+                        if (Build.VERSION.SDK_INT >= 34) {
+                            overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, 0, 0);
+                        } else {
+                            overridePendingTransition(0, 0);
+                        }
                         finish();
                     }, error -> {
                         error.printStackTrace();

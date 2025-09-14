@@ -145,9 +145,7 @@ public class PlaybackServiceNotificationBuilder {
                 notification.setLargeIcon(getDefaultIcon());
             }
 
-            if (Build.VERSION.SDK_INT < 29) {
-                notification.setSubText(position);
-            }
+            notification.setSubText(position);
         } else {
             notification.setContentTitle(context.getString(R.string.app_name));
             notification.setContentText("Loading. If this does not go away, play any episode and contact us.");
@@ -168,7 +166,7 @@ public class PlaybackServiceNotificationBuilder {
     private PendingIntent getPlayerActivityPendingIntent() {
         return PendingIntent.getActivity(context, R.id.pending_intent_player_activity,
                 PlaybackService.getPlayerActivityIntent(context), PendingIntent.FLAG_UPDATE_CURRENT
-                        | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+                        | PendingIntent.FLAG_IMMUTABLE);
     }
 
     private void addActions(NotificationCompat.Builder notification, MediaSessionCompat.Token mediaSessionToken,
@@ -237,13 +235,8 @@ public class PlaybackServiceNotificationBuilder {
         intent.setAction("MediaCode" + keycodeValue);
         intent.putExtra(MediaButtonReceiver.EXTRA_KEYCODE, keycodeValue);
 
-        if (Build.VERSION.SDK_INT >= 26) {
-            return PendingIntent.getForegroundService(context, requestCode, intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        } else {
-            return PendingIntent.getService(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT
-                    | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
-        }
+        return PendingIntent.getForegroundService(context, requestCode, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
     private PendingIntent getPendingIntentForCustomMediaAction(String action, int requestCode) {
@@ -251,13 +244,8 @@ public class PlaybackServiceNotificationBuilder {
         intent.setAction("MediaAction" + action);
         intent.putExtra(MediaButtonReceiver.EXTRA_CUSTOM_ACTION, action);
 
-        if (Build.VERSION.SDK_INT >= 26) {
-            return PendingIntent.getForegroundService(context, requestCode, intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        } else {
-            return PendingIntent.getService(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT
-                    | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
-        }
+        return PendingIntent.getForegroundService(context, requestCode, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
     public void setMediaSessionToken(MediaSessionCompat.Token mediaSessionToken) {

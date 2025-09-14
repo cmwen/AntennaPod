@@ -56,9 +56,6 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
                     .getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clip = ClipData.newPlainText(context.getString(R.string.download_error_details), errorMessage);
             clipboard.setPrimaryClip(clip);
-            if (Build.VERSION.SDK_INT < 32) {
-                EventBus.getDefault().post(new MessageEvent(context.getString(R.string.copied_to_clipboard)));
-            }
         });
     }
 

@@ -129,7 +129,7 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             if (clipboardManager != null) {
                 clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", r.getExtra()));
             }
-            if (Build.VERSION.SDK_INT <= 32) {
+            if (Build.VERSION.SDK_INT < 33) {
                 EventBus.getDefault().post(new MessageEvent(
                         getContext().getResources().getString(R.string.copied_to_clipboard)));
             }
@@ -154,11 +154,9 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             ClipboardManager cm = (ClipboardManager) getContext()
                     .getSystemService(Context.CLIPBOARD_SERVICE);
             cm.setPrimaryClip(clipData);
-            if (Build.VERSION.SDK_INT < 32) {
-                Snackbar s = Snackbar.make(this, R.string.copied_to_clipboard, Snackbar.LENGTH_LONG);
-                s.getView().setElevation(100);
-                s.show();
-            }
+            Snackbar s = Snackbar.make(this, R.string.copied_to_clipboard, Snackbar.LENGTH_LONG);
+            s.getView().setElevation(100);
+            s.show();
         } else if (itemId == R.id.go_to_position_item) {
             if (ShownotesCleaner.isTimecodeLink(selectedUrl) && timecodeSelectedListener != null) {
                 timecodeSelectedListener.accept(ShownotesCleaner.getTimecodeLinkTime(selectedUrl));

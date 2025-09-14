@@ -22,6 +22,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -33,6 +34,7 @@ import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.WindowCompat;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import com.bumptech.glide.Glide;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -93,6 +95,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     private boolean destroyingDueToReload = false;
     private long lastScreenTap = 0;
     private final Handler videoControlsHider = new Handler(Looper.getMainLooper());
+    private PictureInPictureParams pipParams;
     private VideoplayerActivityBinding viewBinding;
     private PlaybackController controller;
     private boolean showTimeLeft = false;
@@ -130,7 +133,8 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             builder.setAutoEnterEnabled(true);
             builder.setSourceRectHint(viewBinding.getRoot().getClipBounds());
         }
-        setPictureInPictureParams(builder.build());
+        pipParams = builder.build();
+        setPictureInPictureParams(pipParams);
     }
 
     @Override
@@ -330,11 +334,10 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         viewBinding.bottomControlsContainer.setOnTouchListener((view, motionEvent) -> true);
         viewBinding.bottomControlsContainer.setFitsSystemWindows(true);
         viewBinding.videoView.getHolder().addCallback(surfaceHolderCallback);
-        viewBinding.videoView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         setupVideoControlsToggler();
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().getInsetsController().hide(WindowInsets.Type.statusBars());
 
         viewBinding.videoPlayerContainer.setOnTouchListener(onVideoviewTouched);
         viewBinding.videoPlayerContainer.getViewTreeObserver().addOnGlobalLayoutListener(() ->
@@ -510,7 +513,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             viewBinding.bottomControlsContainer.startAnimation(animation);
             viewBinding.controlsContainer.startAnimation(animation);
         }
-        viewBinding.videoView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+        getWindow().getInsetsController().show(WindowInsets.Type.statusBars());
     }
 
     private void hideVideoControls(boolean showAnimation) {
@@ -521,9 +524,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
                 viewBinding.controlsContainer.startAnimation(animation);
             }
         }
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        getWindow().getInsetsController().hide(WindowInsets.Type.systemBars());
         viewBinding.bottomControlsContainer.setFitsSystemWindows(true);
 
         viewBinding.bottomControlsContainer.setVisibility(View.GONE);
@@ -761,10 +762,10 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     }
 
     private void compatEnterPictureInPicture() {
-        if (PictureInPictureUtil.supportsPictureInPicture(this) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (PictureInPictureUtil.supportsPictureInPicture(this) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             getSupportActionBar().hide();
             hideVideoControls(false);
-            enterPictureInPictureMode();
+            enterPictureInPictureMode(pipParams);
         }
     }
 
@@ -799,7 +800,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             case KeyEvent.KEYCODE_F: //Fallthrough
             case KeyEvent.KEYCODE_ESCAPE:
                 //Exit fullscreen mode
-                onBackPressed();
+                getOnBackPressedDispatcher().onBackPressed();
                 return true;
             case KeyEvent.KEYCODE_I:
                 compatEnterPictureInPicture();

@@ -188,7 +188,7 @@ public abstract class UserPreferences {
     }
 
     public static boolean getIsThemeColorTinted() {
-        return Build.VERSION.SDK_INT >= 31 && prefs.getBoolean(PREF_TINTED_COLORS, false);
+        return prefs.getBoolean(PREF_TINTED_COLORS, false);
     }
 
     public static List<String> getHiddenDrawerItems() {
@@ -627,10 +627,7 @@ public abstract class UserPreferences {
     }
 
     public static boolean gpodnetNotificationsEnabled() {
-        if (Build.VERSION.SDK_INT >= 26) {
-            return true; // System handles notification preferences
-        }
-        return prefs.getBoolean(PREF_GPODNET_NOTIFICATIONS, true);
+        return true; // System handles notification preferences
     }
 
     /**

@@ -346,9 +346,6 @@ public class CoverFragment extends Fragment {
         if (clipboardManager != null) {
             clipboardManager.setPrimaryClip(ClipData.newPlainText("AntennaPod", text));
         }
-        if (Build.VERSION.SDK_INT <= 32) {
-            EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
-        }
         return true;
     }
 }

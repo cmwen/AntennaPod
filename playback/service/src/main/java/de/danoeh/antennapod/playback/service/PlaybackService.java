@@ -25,7 +25,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.os.VibratorManager;
 import android.service.quicksettings.TileService;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
@@ -279,7 +281,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         mediaSession = new MediaSessionCompat(getApplicationContext(), TAG, eventReceiver, buttonReceiverIntent);
         mediaSession.setCallback(sessionCallback);
-        mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
         recreateMediaPlayer();
         mediaSession.setActive(true);
         setSessionToken(mediaSession.getSessionToken());
@@ -533,7 +534,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         final int keycode = intent.getIntExtra(MediaButtonReceiver.EXTRA_KEYCODE, -1);
         final String customAction = intent.getStringExtra(MediaButtonReceiver.EXTRA_CUSTOM_ACTION);
         final boolean hardwareButton = intent.getBooleanExtra(MediaButtonReceiver.EXTRA_HARDWAREBUTTON, false);
-        Playable playable = intent.getParcelableExtra(PlaybackServiceInterface.EXTRA_PLAYABLE);
+        Playable playable = intent.getParcelableExtra(PlaybackServiceInterface.EXTRA_PLAYABLE, Playable.class);
         if (keycode == -1 && playable == null && customAction == null) {
             Log.e(TAG, "PlaybackService was started with no arguments");
             stateManager.stopService();
@@ -1626,10 +1627,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 mediaPlayer.resume();
             } else if (bluetooth && UserPreferences.isUnpauseOnBluetoothReconnect()) {
                 // let the user know we've started playback again...
-                Vibrator v = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                if (v != null) {
-                    v.vibrate(500);
-                }
+                VibratorManager vibratorManager = (VibratorManager)
+                        getApplicationContext().getSystemService(Context.VIBRATOR_MANAGER_SERVICE);
+                vibratorManager.getDefaultVibrator().vibrate(
+                        VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
                 mediaPlayer.resume();
             }
         }
@@ -1977,7 +1978,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public boolean onMediaButtonEvent(final Intent mediaButton) {
             Log.d(TAG, "onMediaButtonEvent(" + mediaButton + ")");
             if (mediaButton != null) {
-                KeyEvent keyEvent = mediaButton.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+                KeyEvent keyEvent = mediaButton.getParcelableExtra(Intent.EXTRA_KEY_EVENT, KeyEvent.class);
                 if (keyEvent != null &&
                         keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
                         keyEvent.getRepeatCount() == 0) {

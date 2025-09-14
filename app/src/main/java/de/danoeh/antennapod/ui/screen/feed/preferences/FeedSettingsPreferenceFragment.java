@@ -244,7 +244,7 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
         notificationPreference.setChecked(feedPreferences.getShowEpisodeNotification());
         notificationPreference.setOnPreferenceChangeListener((preference, newValue) -> {
             boolean checked = Boolean.TRUE.equals(newValue);
-            if (checked && Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(getContext(),
+            if (checked && ContextCompat.checkSelfPermission(getContext(),
                     Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 enableNotificationsRequestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
                 return false;

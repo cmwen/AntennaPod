@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.Spannable;
@@ -174,10 +175,15 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         setIntent(intent);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        if (Build.VERSION.SDK_INT >= 34) {
+            overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, android.R.anim.fade_in, android.R.anim.fade_out);
+        } else {
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        }
     }
 
     private void lookupUrlAndDownload(String url) {

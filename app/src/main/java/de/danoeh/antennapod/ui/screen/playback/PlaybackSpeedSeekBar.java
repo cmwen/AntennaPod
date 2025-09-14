@@ -59,9 +59,7 @@ public class PlaybackSpeedSeekBar extends FrameLayout {
 
     public void updateSpeed(float speedMultiplier) {
         seekBar.setProgress(Math.round((20 * speedMultiplier) - 10));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            seekBar.setStateDescription(String.format(Locale.getDefault(), "%1$.2f", speedMultiplier));
-        }
+        seekBar.setStateDescription(String.format(Locale.getDefault(), "%1$.2f", speedMultiplier));
     }
 
     public void setProgressChangedListener(Consumer<Float> progressChangedListener) {

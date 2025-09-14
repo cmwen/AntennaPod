@@ -81,8 +81,7 @@ public class ResizingOkHttpStreamFetcher extends OkHttpStreamFetcher {
                     Bitmap bitmap = BitmapFactory.decodeStream(in, null, options);
                     IOUtils.closeQuietly(in);
 
-                    Bitmap.CompressFormat format = Build.VERSION.SDK_INT < 30
-                            ? Bitmap.CompressFormat.WEBP : Bitmap.CompressFormat.WEBP_LOSSY;
+                    Bitmap.CompressFormat format = Bitmap.CompressFormat.WEBP_LOSSY;
 
                     int quality = 100;
                     while (true) {

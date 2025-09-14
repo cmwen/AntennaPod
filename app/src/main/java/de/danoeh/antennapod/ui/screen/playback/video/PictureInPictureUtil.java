@@ -9,16 +9,12 @@ public class PictureInPictureUtil {
     }
 
     public static boolean supportsPictureInPicture(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            PackageManager packageManager = activity.getPackageManager();
-            return packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE);
-        } else {
-            return false;
-        }
+        PackageManager packageManager = activity.getPackageManager();
+        return packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE);
     }
 
     public static boolean isInPictureInPictureMode(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && supportsPictureInPicture(activity)) {
+        if (supportsPictureInPicture(activity)) {
             return activity.isInPictureInPictureMode();
         } else {
             return false;

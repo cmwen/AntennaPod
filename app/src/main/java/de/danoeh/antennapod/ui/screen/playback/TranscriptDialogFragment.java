@@ -109,9 +109,6 @@ public class TranscriptDialogFragment extends DialogFragment
         if (clipboardManager != null) {
             clipboardManager.setPrimaryClip(ClipData.newPlainText(getString(R.string.transcript), selectedText));
         }
-        if (Build.VERSION.SDK_INT <= 32) {
-            EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
-        }
     }
 
     @Override

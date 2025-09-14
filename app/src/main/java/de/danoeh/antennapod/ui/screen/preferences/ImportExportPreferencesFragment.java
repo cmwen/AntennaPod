@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.ui.screen.preferences;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -95,15 +95,16 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
             registerForActivityResult(new PickWritableFolder(), this::setupAutomaticBackup);
 
     private Disposable disposable;
-    private ProgressDialog progressDialog;
+    private AlertDialog progressDialog;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences_import_export);
         setupStorageScreen();
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage(getContext().getString(R.string.please_wait));
+        progressDialog = new MaterialAlertDialogBuilder(getContext())
+                .setView(R.layout.custom_progress_dialog)
+                .setCancelable(false)
+                .create();
     }
 
     @Override

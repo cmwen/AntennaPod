@@ -215,7 +215,7 @@ public class OpmlImportActivity extends ToolbarActivity {
 
         Observable.fromCallable(() -> {
             InputStream opmlFileStream = getContentResolver().openInputStream(uri);
-            BOMInputStream bomInputStream = new BOMInputStream(opmlFileStream);
+            BOMInputStream bomInputStream = BOMInputStream.builder().setInputStream(opmlFileStream).get();
             ByteOrderMark bom = bomInputStream.getBOM();
             String charsetName = (bom == null) ? "UTF-8" : bom.getCharsetName();
             Reader reader = new InputStreamReader(bomInputStream, charsetName);
@@ -238,8 +238,7 @@ public class OpmlImportActivity extends ToolbarActivity {
                         }, e -> {
                             Log.d(TAG, Log.getStackTraceString(e));
                             String message = e.getMessage() == null ? "" : e.getMessage();
-                            if (message.toLowerCase(Locale.ROOT).contains("permission")
-                                    && Build.VERSION.SDK_INT >= 23) {
+                            if (message.toLowerCase(Locale.ROOT).contains("permission")) {
                                 int permission = ActivityCompat.checkSelfPermission(this,
                                         android.Manifest.permission.READ_EXTERNAL_STORAGE);
                                 if (permission != PackageManager.PERMISSION_GRANTED) {

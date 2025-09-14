@@ -126,7 +126,7 @@ public abstract class EpisodesListFragment extends Fragment
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         Log.d(TAG, "onContextItemSelected() called with: " + "item = [" + item + "]");
-        if (!getUserVisibleHint() || !isVisible() || !isMenuVisible()) {
+        if (!isResumed() || !isVisible() || !isMenuVisible()) {
             // The method is called on all fragments in a ViewPager, so this needs to be ignored in invisible ones.
             // Apparently, none of the visibility check method works reliably on its own, so we just use all.
             return false;
