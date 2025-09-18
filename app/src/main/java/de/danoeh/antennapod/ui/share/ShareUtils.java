@@ -17,6 +17,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.ui.cleaner.HtmlToPlainText;
 
 /** Utility methods for sharing data */
 public class ShareUtils {
@@ -103,5 +104,19 @@ public class ShareUtils {
                 .startChooser();
 
         Log.e(TAG, "shareFeedItemFile called");
+    }
+
+    public static String getFeedItemShareTextWithShowNotes(Context context, FeedItem item) {
+        String title = item.getTitle();
+        String feedTitle = item.getFeed().getTitle();
+        String showNotes = HtmlToPlainText.getPlainText(item.getDescription());
+        String text = title + " (" + feedTitle + ")\n\n" + showNotes;
+
+        if (hasLinkToShare(item)) {
+            text += "\n\n" + context.getResources().getString(R.string.share_dialog_episode_website_label) + ": ";
+            text += item.getLinkWithFallback();
+        }
+
+        return text;
     }
 }
