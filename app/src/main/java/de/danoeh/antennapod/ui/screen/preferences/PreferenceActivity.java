@@ -103,6 +103,8 @@ public class PreferenceActivity extends ToolbarActivity implements SearchPrefere
             return R.string.swipeactions_label;
         } else if (preferences == R.xml.preferences_auto_deletion) {
             return R.string.pref_auto_delete_title;
+        } else if (preferences == R.xml.preferences_podchaser) {
+            return R.string.podchaser_settings;
         }
         return R.string.settings_label;
     }

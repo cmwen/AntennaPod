@@ -11,11 +11,13 @@ android {
 dependencies {
     implementation project(":event")
     implementation project(":model")
+    implementation project(':net:common')
     implementation project(':net:discovery')
     implementation project(':storage:database')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
 
+    implementation "androidx.preference:preference:$preferenceVersion"
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation "com.google.android.material:material:$googleMaterialVersion"
