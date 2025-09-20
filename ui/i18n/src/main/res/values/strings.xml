@@ -962,4 +962,23 @@
 
     <string name="echo_share_heading">My favorite podcasts</string>
     <string name="echo_share">My year %d in podcasts. #AntennaPodEcho</string>
+
+    <!-- Podchaser settings -->
+    <string name="podchaser_settings">Podchaser Settings</string>
+    <string name="podchaser_api_key_title">Podchaser API Key</string>
+    <string name="podchaser_api_key_summary">Your personal API key for Podchaser</string>
+    <string name="podchaser_api_key_dialog_title">Enter Podchaser API Key</string>
+    <string name="podchaser_search_terms_title">Episode Search Terms</string>
+    <string name="podchaser_search_terms_summary">Comma-separated terms for episode suggestions</string>
+    <string name="podchaser_search_terms_dialog_title">Enter Episode Search Terms</string>
+    <string name="podchaser_pref">Podchaser</string>
+    <string name="podchaser_pref_summary">Episode suggestions from Podchaser</string>
+
+    <!-- Discovery -->
+    <string name="itunes_search_label">iTunes</string>
+    <string name="podchaser_search_label">Podchaser</string>
+
+    <string name="podchaser_api_secret_title">Podchaser API Secret</string>
+    <string name="podchaser_api_secret_summary">Your personal API secret for Podchaser</string>
+    <string name="podchaser_api_secret_dialog_title">Enter Podchaser API Secret</string>
 </resources>

@@ -46,6 +46,12 @@
             android:title="@string/notification_pref_fragment"
             android:icon="@drawable/ic_notifications"/>
 
+    <Preference
+            android:key="prefScreenPodchaser"
+            android:title="@string/podchaser_pref"
+            android:summary="@string/podchaser_pref_summary"
+            android:icon="@drawable/ic_search"/>
+
     <PreferenceCategory
             android:key="project"
             android:title="@string/project_pref">

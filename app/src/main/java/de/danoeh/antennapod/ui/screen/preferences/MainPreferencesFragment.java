@@ -30,6 +30,7 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
     private static final String PREF_ABOUT = "prefAbout";
     private static final String PREF_NOTIFICATION = "notifications";
     private static final String PREF_CONTRIBUTE = "prefContribute";
+    private static final String PREF_SCREEN_PODCHASER = "prefScreenPodchaser";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -95,6 +96,10 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
             ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_notifications);
             return true;
         });
+        findPreference(PREF_SCREEN_PODCHASER).setOnPreferenceClickListener(preference -> {
+            ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_podchaser);
+            return true;
+        });
         findPreference(PREF_ABOUT).setOnPreferenceClickListener(
                 preference -> {
                     getParentFragmentManager().beginTransaction()
@@ -146,6 +151,8 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
                 .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_synchronization));
         config.index(R.xml.preferences_notifications)
                 .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_notifications));
+        config.index(R.xml.preferences_podchaser)
+                .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_podchaser));
         config.index(R.xml.feed_settings)
                 .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.feed_settings));
         config.index(R.xml.preferences_swipe)
