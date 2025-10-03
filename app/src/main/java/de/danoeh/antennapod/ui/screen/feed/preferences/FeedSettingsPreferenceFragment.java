@@ -202,15 +202,20 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
             return false;
         });
         ListPreference volumeAdaptationPreference = findPreference("volumeReduction");
-        volumeAdaptationPreference.setValue("" + feedPreferences.getVolumeAdaptionSetting().toInteger());
-        volumeAdaptationPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-            VolumeAdaptionSetting newSetting = VolumeAdaptionSetting.fromInteger(Integer.parseInt((String) newValue));
-            feedPreferences.setVolumeAdaptionSetting(newSetting);
-            DBWriter.setFeedPreferences(feedPreferences);
+        if (UserPreferences.isNormalizeVolume()) {
+            volumeAdaptationPreference.setEnabled(false);
+            volumeAdaptationPreference.setSummary(R.string.volume_normalization_enabled_summary);
+        } else {
             volumeAdaptationPreference.setValue("" + feedPreferences.getVolumeAdaptionSetting().toInteger());
-            EventBus.getDefault().post(new VolumeAdaptionChangedEvent(newSetting, feed.getId()));
-            return false;
-        });
+            volumeAdaptationPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+                VolumeAdaptionSetting newSetting = VolumeAdaptionSetting.fromInteger(Integer.parseInt((String) newValue));
+                feedPreferences.setVolumeAdaptionSetting(newSetting);
+                DBWriter.setFeedPreferences(feedPreferences);
+                volumeAdaptationPreference.setValue("" + feedPreferences.getVolumeAdaptionSetting().toInteger());
+                EventBus.getDefault().post(new VolumeAdaptionChangedEvent(newSetting, feed.getId()));
+                return false;
+            });
+        }
         findPreference(PREF_NEW_EPISODES_ACTION).setOnPreferenceChangeListener((preference, newValue) -> {
             int code = Integer.parseInt((String) newValue);
             feedPreferences.setNewEpisodesAction(FeedPreferences.NewEpisodesAction.fromCode(code));

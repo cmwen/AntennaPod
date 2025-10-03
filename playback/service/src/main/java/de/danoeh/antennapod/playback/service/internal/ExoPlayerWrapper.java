@@ -66,6 +66,7 @@ public class ExoPlayerWrapper {
     public static final int BUFFERING_STARTED = -1;
     public static final int BUFFERING_ENDED = -2;
     private static final String TAG = "ExoPlayerWrapper";
+    private static final int NORMALIZATION_TARGET_GAIN_MB = 700;
 
     private final Context context;
     private final Disposable bufferingUpdateDisposable;
@@ -80,6 +81,7 @@ public class ExoPlayerWrapper {
     private SimpleCache simpleCache;
     @Nullable
     private LoudnessEnhancer loudnessEnhancer = null;
+    private boolean normalizeVolume = false;
 
     ExoPlayerWrapper(Context context) {
         this.context = context;
@@ -200,6 +202,9 @@ public class ExoPlayerWrapper {
         if (exoPlayer != null) {
             exoPlayer.release();
         }
+        if (loudnessEnhancer != null) {
+            loudnessEnhancer.release();
+        }
         if (simpleCache != null) {
             simpleCache.release();
             simpleCache = null;
@@ -276,26 +281,32 @@ public class ExoPlayerWrapper {
         exoPlayer.setPlaybackParameters(playbackParameters);
     }
 
+    public void setEnableNormalizeVolume(boolean normalize) {
+        normalizeVolume = normalize;
+        setVolume(1.0f, 1.0f);
+    }
+
     public void setVolume(float v, float v1) {
-        if (v > 1) {
-            exoPlayer.setVolume(1f);
-            try {
-                if (loudnessEnhancer != null) {
-                    loudnessEnhancer.setEnabled(true);
-                    loudnessEnhancer.setTargetGain((int) (1000 * (v - 1)));
-                }
-            } catch (Exception e) {
-                Log.d(TAG, e.toString());
+        try {
+            if (loudnessEnhancer == null) {
+                exoPlayer.setVolume(v);
+                return;
             }
-        } else {
-            exoPlayer.setVolume(v);
-            try {
-                if (loudnessEnhancer != null) {
-                    loudnessEnhancer.setEnabled(false);
-                }
-            } catch (Exception e) {
-                Log.d(TAG, e.toString());
+
+            if (normalizeVolume) {
+                exoPlayer.setVolume(1f);
+                loudnessEnhancer.setEnabled(true);
+                loudnessEnhancer.setTargetGain(NORMALIZATION_TARGET_GAIN_MB);
+            } else if (v > 1) {
+                exoPlayer.setVolume(1f);
+                loudnessEnhancer.setEnabled(true);
+                loudnessEnhancer.setTargetGain((int) (1000 * (v - 1)));
+            } else {
+                exoPlayer.setVolume(v);
+                loudnessEnhancer.setEnabled(false);
             }
+        } catch (Exception e) {
+            Log.d(TAG, e.toString());
         }
     }
 
@@ -417,5 +428,6 @@ public class ExoPlayerWrapper {
         }
 
         this.loudnessEnhancer = newEnhancer;
+        setVolume(1.0f, 1.0f);
     }
 }

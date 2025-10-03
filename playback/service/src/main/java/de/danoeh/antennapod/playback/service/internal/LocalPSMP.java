@@ -461,6 +461,11 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         mediaPlayer.setPlaybackParams(speed, skipSilence);
     }
 
+    @Override
+    public void setEnableNormalizeVolume(boolean normalize) {
+        mediaPlayer.setEnableNormalizeVolume(normalize);
+    }
+
     /**
      * Returns the current playback speed. If the playback speed could not be retrieved, 1 is returned.
      */

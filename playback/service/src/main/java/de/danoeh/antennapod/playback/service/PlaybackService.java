@@ -95,6 +95,7 @@ import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.event.settings.SkipIntroEndingChangedEvent;
 import de.danoeh.antennapod.event.settings.SpeedPresetChangedEvent;
+import de.danoeh.antennapod.event.settings.NormalizeVolumeChangedEvent;
 import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -306,6 +307,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             mediaPlayer.playMediaObject(media, !media.localFileAvailable(), wasPlaying, true);
         }
         isCasting = mediaPlayer.isCasting();
+        setEnableNormalizeVolume(UserPreferences.isNormalizeVolume());
         updateMediaSession(mediaPlayer.getPlayerStatus());
     }
 
@@ -1659,6 +1661,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
+    public void onNormalizeVolumeChanged(NormalizeVolumeChangedEvent event) {
+        setEnableNormalizeVolume(event.isEnabled());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
     public void speedPresetChanged(SpeedPresetChangedEvent event) {
         if (getPlayable() instanceof FeedMedia) {
             FeedMedia playable = (FeedMedia) getPlayable();
@@ -1732,6 +1740,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public void setSkipSilence(boolean skipSilence) {
         PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(skipSilence);
         mediaPlayer.setPlaybackParams(getCurrentPlaybackSpeed(), skipSilence);
+    }
+
+    public void setEnableNormalizeVolume(boolean enable) {
+        mediaPlayer.setEnableNormalizeVolume(enable);
     }
 
     public float getCurrentPlaybackSpeed() {

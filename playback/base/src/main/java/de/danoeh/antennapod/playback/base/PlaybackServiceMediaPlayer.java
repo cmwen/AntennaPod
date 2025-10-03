@@ -146,6 +146,8 @@ public abstract class PlaybackServiceMediaPlayer {
      */
     public abstract void  setPlaybackParams(final float speed, final boolean skipSilence);
 
+    public abstract void setEnableNormalizeVolume(boolean enable);
+
     /**
      * Returns the current playback speed. If the playback speed could not be retrieved, 1 is returned.
      */

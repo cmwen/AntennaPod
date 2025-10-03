@@ -13,6 +13,8 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import de.danoeh.antennapod.ui.screen.feed.preferences.SkipPreferenceDialog;
 import de.danoeh.antennapod.ui.screen.playback.VariableSpeedDialog;
+import de.danoeh.antennapod.event.settings.NormalizeVolumeChangedEvent;
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Map;
 
@@ -54,6 +56,11 @@ public class PlaybackPreferencesFragment extends AnimatedPreferenceFragment {
         findPreference(UserPreferences.PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT).setVisible(false);
 
         buildEnqueueLocationPreference();
+
+        findPreference(UserPreferences.PREF_NORMALIZE_VOLUME).setOnPreferenceChangeListener((preference, newValue) -> {
+            EventBus.getDefault().post(new NormalizeVolumeChangedEvent((boolean) newValue));
+            return true;
+        });
     }
 
     private void buildEnqueueLocationPreference() {

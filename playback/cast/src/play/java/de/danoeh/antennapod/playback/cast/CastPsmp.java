@@ -426,6 +426,11 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     }
 
     @Override
+    public void setEnableNormalizeVolume(boolean enable) {
+        // Not supported on cast devices
+    }
+
+    @Override
     public float getPlaybackSpeed() {
         MediaStatus status = remoteMediaClient.getMediaStatus();
         return status != null ? (float) status.getPlaybackRate() : 1.0f;

@@ -90,6 +90,7 @@ public abstract class UserPreferences {
     public static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
     private static final String PREF_TIME_RESPECTS_SPEED = "prefPlaybackTimeRespectsSpeed";
     public static final String PREF_STREAM_OVER_DOWNLOAD = "prefStreamOverDownload";
+    public static final String PREF_NORMALIZE_VOLUME = "prefNormalizeVolume";
 
     // Network
     private static final String PREF_ENQUEUE_DOWNLOADED = "prefEnqueueDownloaded";
@@ -764,6 +765,10 @@ public abstract class UserPreferences {
 
     public static boolean isStreamOverDownload() {
         return prefs.getBoolean(PREF_STREAM_OVER_DOWNLOAD, false);
+    }
+
+    public static boolean isNormalizeVolume() {
+        return prefs.getBoolean(PREF_NORMALIZE_VOLUME, false);
     }
 
     public static void setStreamOverDownload(boolean stream) {

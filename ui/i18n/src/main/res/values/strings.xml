@@ -509,6 +509,9 @@
     <string name="pref_theme_title_dark">Dark</string>
     <string name="pref_episode_cache_unlimited">Unlimited</string>
     <string name="pref_playback_speed_sum">Customize the speeds available for variable speed playback</string>
+    <string name="pref_normalize_volume_title">Normalize Volume</string>
+    <string name="pref_normalize_volume_summary">Reduces the volume difference between podcasts by using a built-in audio effect. Might cause issues on some devices.</string>
+    <string name="volume_normalization_enabled_summary">Disabled because global volume normalization is enabled.</string>
     <string name="pref_feed_playback_speed_sum">The speed to use when starting audio playback for episodes in this podcast</string>
     <string name="pref_feed_skip">Auto skip</string>
     <string name="pref_feed_skip_sum">Skip introductions and ending credits</string>
